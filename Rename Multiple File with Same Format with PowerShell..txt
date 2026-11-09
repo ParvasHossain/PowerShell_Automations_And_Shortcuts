@@ -1,0 +1,15 @@
+If the File name Is PCSL_DM_12 and I want to make it Like PCSL_DM_12 Counter Meter .
+At the same time , there are multiple files with same Name format requiring 
+to add the same extention or name after the unique Id : The Code is Below.
+
+
+
+
+Get-ChildItem -Filter "*PCSL_*" | Rename-Item -NewName { $_.Name -replace '^.*(PCSL_[A-Z]+_\d+)(.*)$', '$1 Load Cell With Indicator$2' }
+
+
+
+
+Output : PCSL_DM_12 Load Cell With Indicator .( For All File in the folder )
+
+note: please open the file path in terminal by clicking "Shift + Mouse right click " and Choose the Powershell option .
