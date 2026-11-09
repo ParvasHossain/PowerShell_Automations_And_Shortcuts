@@ -1,0 +1,1 @@
+Get-ChildItem -Filter "*PCSL_*" | Rename-Item -NewName { $_.Name -replace '^.*(PCSL_[A-Z]+_\d+)(.*)$', '$1 Load Cell With Indicator$2' }

@@ -1,0 +1,27 @@
+# Dictionary mapping strictly for the 4 specific files
+$FileMap = @{
+    "PCSL_TH_28"  = "Temperature & Humidity Test Chamber"
+    "PCSL_ET_19A" = "Multifunction Calibrator"
+    "PCSL_ET_19B" = "Current Coil"
+    "PCSL_MM-01"  = "MultiMeter (Ph, Conductivity /TDS)"
+}
+
+# Process the directory items
+Get-ChildItem -Filter "*PCSL_*.pdf" | ForEach-Object {
+    $OldName = $_.Name
+
+    # Regular expression to extract the ID starting from PCSL_ up to the extension
+    if ($OldName -match '(PCSL_[A-Z0-9_-]+)(?=\.pdf$)') {
+        $FullID = $Matches[1].Trim()
+
+        # Check if the extracted ID is one of the four targeted files
+        if ($FileMap.ContainsKey($FullID)) {
+            $InstrumentDescription = $FileMap[$FullID]
+            $NewName = "$FullID $InstrumentDescription.pdf"
+
+            # Execute the rename action safely
+            Rename-Item -Path $_.FullName -NewName $NewName -ErrorAction SilentlyContinue
+            Write-Host "Renamed: $OldName ➔ $NewName" -ForegroundColor Green
+        }
+    }
+}
